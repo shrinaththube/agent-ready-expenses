@@ -42,8 +42,37 @@ Money is `{amount_minor: integer, currency}` everywhere; policies are data in `s
 ## Results: with vs without context
 
 <!-- results:start -->
-Results pending: run `python3 evals/run_evals.py` and `python3 evals/report.py --readme README.md evals/results/<run>.jsonl`.
+| Mode | Runs | Pass rate | Tool calls before first edit | Tokens (all, incl. cache) | Time (s) | Runs with a rule violation | float money | policy outside registry | submitted write |
+|---|---|---|---|---|---|---|---|---|---|
+| no-context | 30 | 27/30 (90%) | 5.4 | 232064 | 37.9 | 0 | 0 | 0 | 0 |
+| with-context | 30 | 30/30 (100%) | 5.5 | 259892 | 42.2 | 0 | 0 | 0 | 0 |
+
+Agent(s): claude. Trials: 60.
+
+| Task | no-context pass | with-context pass | no-context violations | with-context violations |
+|---|---|---|---|---|
+| `add-rule-per-diem-international` | 3/3 | 3/3 | 0 | 0 |
+| `avoid-legacy-fx` | 3/3 | 3/3 | 0 | 0 |
+| `csv-export-feature` | 3/3 | 3/3 | 0 | 0 |
+| `edit-submitted-expense` | 3/3 | 3/3 | 0 | 0 |
+| `fx-wrong-date-bug` | 3/3 | 3/3 | 0 | 0 |
+| `jpy-rounding-bug` | 3/3 | 3/3 | 0 | 0 |
+| `receipt-parse-currency-symbol` | 3/3 | 3/3 | 0 | 0 |
+| `self-approval-bug` | 3/3 | 3/3 | 0 | 0 |
+| `upgrade-major-dep-esm-only` | 0/3 | 3/3 | 2 | 0 |
+| `upgrade-minor-dep` | 3/3 | 3/3 | 0 | 0 |
 <!-- results:end -->
+
+Run 2026-11-04: Claude Code CLI (`claude` 2.1, model `sonnet`), 3 trials per task and mode, 60 runs, about $7.40 total (`evals/results/2026-11-04-sonnet.jsonl`; the with-context rows are the CI baseline in `evals/results/baseline.json`). "Runs with a rule violation" counts the three Tally rules (float money, policy outside the registry, writes to submitted expenses); `too_many_files` is tracked separately and is not in that column.
+
+**What the numbers say, honestly**
+
+- With a capable model the repo is easy enough that **context made little difference on nine of ten tasks**: no-context passed them too, with no float money, no handler `if`s, and no mutation of submitted expenses. I expected the rule-violation column to show a gap and it does not. This is one model, three trials per cell, and ten tasks, so treat differences smaller than a trial or two as noise.
+- The one clear signal is `upgrade-major-dep-esm-only` (the nanoid 3 -> 5 bump): **0/3 without context, 3/3 with**. Without context the agent bumped the ESM-only major (touching 5 files in two runs, 2 in the third); with context it read the ADR, ran the module-format check, and wrote migration notes instead of merging. That is knowledge only the repo's context contains, which is where context should matter.
+- **The surprise:** the `edit-submitted-expense` ticket literally says "add `PATCH /expenses/{id}`" and I expected no-context agents to mutate in place. All six runs, with or without context, built revisions. The model's default already respects immutability when the record is obviously an approved financial document. The context's value there is consistency and the audit/immutability conventions, not a different decision. Cheap rule: do not claim an effect the data does not show.
+- Context cost tokens: with-context runs used about 12% more tokens (reading the instruction files) and did not reduce time or tool calls before the first edit in this sample.
+
+**Grader lessons from getting here.** My first full run reported `edit-submitted-expense` as 0/3 with context and 10-24 violations. Both were grader bugs, not agent failures: a hidden test that demanded `revision_of` point at the root (agents reasonably linked to the previous revision), required the first audit entry on a revision to be `draft -> submitted`, assumed a bare-expense response, and a violation scan that matched a variable named `e` and the word "float" in a test name. I fixed the tests and heuristics, re-validated all ten tasks with `--dry-run`, and reran. The table above is from the corrected graders.
 
 ## Run it
 
@@ -74,4 +103,9 @@ Dashboard: `cd apps/dashboard && npm ci && npm run dev` with the two services ru
 
 ## Lessons learned
 
-See the end of this file once results are in.
+- **Mechanical grading needs iteration.** Hidden tests encode design decisions the prompt did not state (response shape, audit ordering, revision linking). Every agent "failure" deserves a look at the diff before it is believed; reference patches only prove one valid solution exists.
+- **Heuristic violation scans are a tripwire, not a verdict.** Name-based scans produced false positives until restricted to production code and unambiguous patterns; they are unit-tested in `evals/tests/test_checks.py`.
+- **Measure before claiming.** The strongest model behavior (revisions over mutation) came for free; the repo-specific trap (ESM-only major bump) is where context paid off. Put the effort into repo-specific landmines (ADRs, pinned deps, deprecated modules) rather than generic advice.
+- **Context is code.** `context_lint.py` and the context-to-tag map keep instruction files honest; a path that stops existing fails CI.
+- **Sample size.** Three trials per cell cannot separate small effects. The harness takes `--trials`; use more before drawing conclusions about a change.
+- **Process.** The eval runs themselves hit a git-config pitfall (scratch worktrees share repository config), which is why six early commits show a placeholder author; see the PR notes.

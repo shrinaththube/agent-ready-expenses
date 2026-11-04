@@ -1,0 +1,827 @@
+[
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "add-rule-per-diem-international",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "policy",
+   "go",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 5,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 3126,
+   "cache_read_input_tokens": 241299,
+   "cache_creation_input_tokens": 20490
+  },
+  "cost_usd": 0.1373739,
+  "turns": 7,
+  "duration_s": 42.1,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "add-rule-per-diem-international",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "policy",
+   "go",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 6,
+  "tool_calls": 7,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 16,
+   "output_tokens": 3940,
+   "cache_read_input_tokens": 338803,
+   "cache_creation_input_tokens": 22096
+  },
+  "cost_usd": 0.1616963,
+  "turns": 9,
+  "duration_s": 50.9,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "add-rule-per-diem-international",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "policy",
+   "go",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 7,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 2689,
+   "cache_read_input_tokens": 196092,
+   "cache_creation_input_tokens": 20500
+  },
+  "cost_usd": 0.1285192,
+  "turns": 9,
+  "duration_s": 27.5,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "avoid-legacy-fx",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "fx",
+   "python",
+   "landmine",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 8,
+  "calls_before_first_edit": 4,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 1904,
+   "cache_read_input_tokens": 196368,
+   "cache_creation_input_tokens": 17033
+  },
+  "cost_usd": 0.1068288,
+  "turns": 9,
+  "duration_s": 24.6,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "avoid-legacy-fx",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "fx",
+   "python",
+   "landmine",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 9,
+  "calls_before_first_edit": 5,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 2107,
+   "cache_read_input_tokens": 196376,
+   "cache_creation_input_tokens": 17284
+  },
+  "cost_usd": 0.1098636,
+  "turns": 10,
+  "duration_s": 28.6,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "avoid-legacy-fx",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "fx",
+   "python",
+   "landmine",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 3,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 8,
+   "output_tokens": 1464,
+   "cache_read_input_tokens": 149792,
+   "cache_creation_input_tokens": 14599
+  },
+  "cost_usd": 0.0880312,
+  "turns": 4,
+  "duration_s": 25.9,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "csv-export-feature",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "csv",
+   "typescript",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 2859,
+   "cache_read_input_tokens": 196628,
+   "cache_creation_input_tokens": 18950
+  },
+  "cost_usd": 0.1240728,
+  "turns": 8,
+  "duration_s": 44.3,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "csv-export-feature",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "csv",
+   "typescript",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 3019,
+   "cache_read_input_tokens": 194862,
+   "cache_creation_input_tokens": 18410
+  },
+  "cost_usd": 0.1233362,
+  "turns": 8,
+  "duration_s": 32.7,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "csv-export-feature",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "csv",
+   "typescript",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 10,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 18,
+   "output_tokens": 3971,
+   "cache_read_input_tokens": 388594,
+   "cache_creation_input_tokens": 22351
+  },
+  "cost_usd": 0.16800940000000003,
+  "turns": 12,
+  "duration_s": 62.0,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-090921",
+  "agent": "claude",
+  "task": "edit-submitted-expense",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "workflow",
+   "immutability",
+   "go",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 16,
+  "calls_before_first_edit": 11,
+  "tokens": {
+   "input_tokens": 14,
+   "output_tokens": 10730,
+   "cache_read_input_tokens": 338694,
+   "cache_creation_input_tokens": 38025
+  },
+  "cost_usd": 0.2932974,
+  "turns": 17,
+  "duration_s": 80.5,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-090921",
+  "agent": "claude",
+  "task": "edit-submitted-expense",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "workflow",
+   "immutability",
+   "go",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 4,
+  "tool_calls": 13,
+  "calls_before_first_edit": 11,
+  "tokens": {
+   "input_tokens": 16,
+   "output_tokens": 8045,
+   "cache_read_input_tokens": 398609,
+   "cache_creation_input_tokens": 33210
+  },
+  "cost_usd": 0.2531829,
+  "turns": 14,
+  "duration_s": 77.5,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-090921",
+  "agent": "claude",
+  "task": "edit-submitted-expense",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "workflow",
+   "immutability",
+   "go",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 5,
+  "tool_calls": 5,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 6116,
+   "cache_read_input_tokens": 265276,
+   "cache_creation_input_tokens": 28838
+  },
+  "cost_usd": 0.20306359999999998,
+  "turns": 6,
+  "duration_s": 57.3,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "fx-wrong-date-bug",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "fx",
+   "python",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 8,
+  "calls_before_first_edit": 5,
+  "tokens": {
+   "input_tokens": 8,
+   "output_tokens": 2095,
+   "cache_read_input_tokens": 151562,
+   "cache_creation_input_tokens": 16494
+  },
+  "cost_usd": 0.1020982,
+  "turns": 9,
+  "duration_s": 20.1,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "fx-wrong-date-bug",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "fx",
+   "python",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 8,
+  "calls_before_first_edit": 3,
+  "tokens": {
+   "input_tokens": 8,
+   "output_tokens": 1964,
+   "cache_read_input_tokens": 151619,
+   "cache_creation_input_tokens": 16531
+  },
+  "cost_usd": 0.1009419,
+  "turns": 9,
+  "duration_s": 22.8,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "fx-wrong-date-bug",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "fx",
+   "python",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 10,
+  "calls_before_first_edit": 5,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 2260,
+   "cache_read_input_tokens": 241872,
+   "cache_creation_input_tokens": 17523
+  },
+  "cost_usd": 0.1169032,
+  "turns": 11,
+  "duration_s": 41.1,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "jpy-rounding-bug",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "money",
+   "typescript",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 3,
+  "tool_calls": 13,
+  "calls_before_first_edit": 5,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 2405,
+   "cache_read_input_tokens": 195030,
+   "cache_creation_input_tokens": 18266
+  },
+  "cost_usd": 0.11663700000000002,
+  "turns": 14,
+  "duration_s": 27.0,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "jpy-rounding-bug",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "money",
+   "typescript",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 3,
+  "tool_calls": 10,
+  "calls_before_first_edit": 4,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 2113,
+   "cache_read_input_tokens": 241989,
+   "cache_creation_input_tokens": 18016
+  },
+  "cost_usd": 0.1174169,
+  "turns": 11,
+  "duration_s": 35.6,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "jpy-rounding-bug",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "money",
+   "typescript",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 3,
+  "tool_calls": 9,
+  "calls_before_first_edit": 4,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 2051,
+   "cache_read_input_tokens": 242757,
+   "cache_creation_input_tokens": 17771
+  },
+  "cost_usd": 0.1158937,
+  "turns": 10,
+  "duration_s": 31.2,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "receipt-parse-currency-symbol",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "receipts",
+   "python",
+   "parsing",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 3,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 8,
+   "output_tokens": 4567,
+   "cache_read_input_tokens": 151203,
+   "cache_creation_input_tokens": 19054
+  },
+  "cost_usd": 0.13702229999999999,
+  "turns": 7,
+  "duration_s": 43.5,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "receipt-parse-currency-symbol",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "receipts",
+   "python",
+   "parsing",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 4,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 4522,
+   "cache_read_input_tokens": 198254,
+   "cache_creation_input_tokens": 19093
+  },
+  "cost_usd": 0.1414374,
+  "turns": 5,
+  "duration_s": 60.9,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "receipt-parse-currency-symbol",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "receipts",
+   "python",
+   "parsing",
+   "feature"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 3,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 8,
+   "output_tokens": 4690,
+   "cache_read_input_tokens": 151757,
+   "cache_creation_input_tokens": 18596
+  },
+  "cost_usd": 0.13647569999999998,
+  "turns": 4,
+  "duration_s": 50.3,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "self-approval-bug",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "policy",
+   "go",
+   "security",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 7,
+  "calls_before_first_edit": 4,
+  "tokens": {
+   "input_tokens": 14,
+   "output_tokens": 2477,
+   "cache_read_input_tokens": 294338,
+   "cache_creation_input_tokens": 22486
+  },
+  "cost_usd": 0.14417580000000002,
+  "turns": 8,
+  "duration_s": 43.1,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "self-approval-bug",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "policy",
+   "go",
+   "security",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 11,
+  "calls_before_first_edit": 5,
+  "tokens": {
+   "input_tokens": 16,
+   "output_tokens": 3691,
+   "cache_read_input_tokens": 342049,
+   "cache_creation_input_tokens": 21020
+  },
+  "cost_usd": 0.15522690000000003,
+  "turns": 12,
+  "duration_s": 50.5,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "self-approval-bug",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "policy",
+   "go",
+   "security",
+   "bug"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 3,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 14,
+   "output_tokens": 3135,
+   "cache_read_input_tokens": 295562,
+   "cache_creation_input_tokens": 22550
+  },
+  "cost_usd": 0.15113420000000002,
+  "turns": 7,
+  "duration_s": 52.9,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "upgrade-major-dep-esm-only",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "deps",
+   "typescript",
+   "upgrade",
+   "landmine"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 1,
+  "tool_calls": 5,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 2081,
+   "cache_read_input_tokens": 189064,
+   "cache_creation_input_tokens": 14000
+  },
+  "cost_usd": 0.0957364,
+  "turns": 7,
+  "duration_s": 36.5,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "upgrade-major-dep-esm-only",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "deps",
+   "typescript",
+   "upgrade",
+   "landmine"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 1,
+  "tool_calls": 4,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 2196,
+   "cache_read_input_tokens": 192109,
+   "cache_creation_input_tokens": 15421
+  },
+  "cost_usd": 0.10287489999999999,
+  "turns": 5,
+  "duration_s": 32.9,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "upgrade-major-dep-esm-only",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "deps",
+   "typescript",
+   "upgrade",
+   "landmine"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 1,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 10,
+   "output_tokens": 1970,
+   "cache_read_input_tokens": 189274,
+   "cache_creation_input_tokens": 14043
+  },
+  "cost_usd": 0.0948194,
+  "turns": 8,
+  "duration_s": 31.3,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "upgrade-minor-dep",
+  "mode": "with-context",
+  "trial": 0,
+  "tags": [
+   "deps",
+   "typescript",
+   "upgrade"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 8,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 16,
+   "output_tokens": 1911,
+   "cache_read_input_tokens": 317443,
+   "cache_creation_input_tokens": 15154
+  },
+  "cost_usd": 0.1115023,
+  "turns": 10,
+  "duration_s": 42.9,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "upgrade-minor-dep",
+  "mode": "with-context",
+  "trial": 1,
+  "tags": [
+   "deps",
+   "typescript",
+   "upgrade"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 1798,
+   "cache_read_input_tokens": 232660,
+   "cache_creation_input_tokens": 14689
+  },
+  "cost_usd": 0.100026,
+  "turns": 8,
+  "duration_s": 41.1,
+  "agent_exit": 0
+ },
+ {
+  "run_id": "20261104-082754",
+  "agent": "claude",
+  "task": "upgrade-minor-dep",
+  "mode": "with-context",
+  "trial": 2,
+  "tags": [
+   "deps",
+   "typescript",
+   "upgrade"
+  ],
+  "passed": true,
+  "violations": [],
+  "files_changed": 2,
+  "tool_calls": 6,
+  "calls_before_first_edit": null,
+  "tokens": {
+   "input_tokens": 12,
+   "output_tokens": 1375,
+   "cache_read_input_tokens": 231869,
+   "cache_creation_input_tokens": 14830
+  },
+  "cost_usd": 0.0962809,
+  "turns": 8,
+  "duration_s": 48.7,
+  "agent_exit": 0
+ }
+]
