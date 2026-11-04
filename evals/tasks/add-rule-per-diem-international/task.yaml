@@ -1,0 +1,18 @@
+id: add-rule-per-diem-international
+title: International meals get a higher per-diem cap
+tags:
+- policy
+- go
+- feature
+prompt: International meals should have their own per-person daily cap of $120.00 (expenses with region
+  "international"), while domestic meals keep the existing $75.00 cap. Implement this, with boundary tests
+  (exactly at the cap and one cent over) and keep the policy documentation current. Run the policy service
+  tests when done.
+reference_patch: reference.patch
+hidden_tests:
+- services/policy/policy/hidden_intl_test.go
+grade_command: cd services/policy && go test ./... -count=1
+forbidden_paths:
+- '*contracts_gen.go'
+max_files: 8
+trials: 3

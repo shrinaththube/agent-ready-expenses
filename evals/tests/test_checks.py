@@ -46,3 +46,7 @@ def test_forbidden_and_max_files():
     assert kinds(d, forbidden=["services/receipts/legacy/"]) == {"forbidden_path"}
     two = diff("a.py", "x=1") + diff("b.py", "y=2")
     assert kinds(two, max_files=1) == {"too_many_files"}
+
+
+def test_nil_checks_are_not_policy_logic():
+    assert kinds(diff("services/policy/api/server.go", "if p.Category != nil {")) == set()

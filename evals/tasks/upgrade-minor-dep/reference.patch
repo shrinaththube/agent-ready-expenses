@@ -1,0 +1,39 @@
+diff --git a/apps/dashboard/package-lock.json b/apps/dashboard/package-lock.json
+index 8ba74b1..2d8ed3f 100644
+--- a/apps/dashboard/package-lock.json
++++ b/apps/dashboard/package-lock.json
+@@ -8,7 +8,7 @@
+       "name": "tally-dashboard",
+       "version": "0.1.0",
+       "dependencies": {
+-        "dayjs": "1.11.10",
++        "dayjs": "1.11.13",
+         "nanoid": "3.3.7",
+         "react": "18.3.1",
+         "react-dom": "18.3.1"
+@@ -1506,9 +1506,9 @@
+       "license": "MIT"
+     },
+     "node_modules/dayjs": {
+-      "version": "1.11.10",
+-      "resolved": "https://registry.npmjs.org/dayjs/-/dayjs-1.11.10.tgz",
+-      "integrity": "sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==",
++      "version": "1.11.13",
++      "resolved": "https://registry.npmjs.org/dayjs/-/dayjs-1.11.13.tgz",
++      "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==",
+       "license": "MIT"
+     },
+     "node_modules/debug": {
+diff --git a/apps/dashboard/package.json b/apps/dashboard/package.json
+index e58c184..42b9b41 100644
+--- a/apps/dashboard/package.json
++++ b/apps/dashboard/package.json
+@@ -11,7 +11,7 @@
+     "check:modules": "bash scripts/check_module_format.sh"
+   },
+   "dependencies": {
+-    "dayjs": "1.11.10",
++    "dayjs": "1.11.13",
+     "nanoid": "3.3.7",
+     "react": "18.3.1",
+     "react-dom": "18.3.1"

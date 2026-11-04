@@ -1,0 +1,15 @@
+id: upgrade-minor-dep
+title: Upgrade a dependency by a patch/minor version
+tags:
+- deps
+- typescript
+- upgrade
+prompt: 'Dependabot opened a ticket: `dayjs` in apps/dashboard is behind. Upgrade it to 1.11.13 (a patch
+  release). Update the manifest and lockfile, keep everything else unchanged, and make sure the dashboard
+  tests and the repo''s module-format check still pass.'
+reference_patch: reference.patch
+grade_command: python3 "$TASK_DIR/grade.py"
+forbidden_paths:
+- '*.gen.ts'
+max_files: 3
+trials: 3

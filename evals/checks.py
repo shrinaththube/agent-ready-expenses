@@ -28,7 +28,7 @@ class Violation:
 MONEYISH = re.compile(r"amount|total|price|money|cost|minor|cents|usd|fee|reimburs|balance", re.I)
 FLOATISH = re.compile(r"\bfloat(32|64)?\b|\bparseFloat\b|\.toFixed\(|\bNumber\(\s*[^)]*(amount|total|price)", re.I)
 HANDLER_LOGIC = re.compile(
-    r"\.(Category|Region)\s*(==|!=)|AmountMinor\s*(<=|>=|<|>)\s*[\w(]|\.Weekday\(\)|"
+    r"\.(Category|Region)\s*(==|!=)(?!\s*nil\b)|AmountMinor\s*(<=|>=|<|>)\s*[\w(]|\.Weekday\(\)|"
     r"amount_minor\s*(<=|>=|<|>)\s*\d"
 )
 STORED_FIELD_WRITE = re.compile(
