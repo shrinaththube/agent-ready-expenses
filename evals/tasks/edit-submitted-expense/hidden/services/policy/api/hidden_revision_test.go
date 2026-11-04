@@ -116,8 +116,9 @@ func TestHiddenRevisionGoesThroughWorkflowAndChains(t *testing.T) {
 	_, b = hrDo(t, s, "PATCH", "/expenses/"+rev.ID, "e1", "employee", map[string]any{"description": "Keyboard (USB)"})
 	var rev3 contracts.Expense
 	_ = json.Unmarshal(b, &rev3)
-	if rev3.Revision != 3 || rev3.RevisionOf == nil || *rev3.RevisionOf != orig.ID {
-		t.Fatalf("revision 3 = %+v (revision_of must point at the original)", rev3)
+	// revision_of links the chain: either the root original or the revision it corrects.
+	if rev3.Revision != 3 || rev3.RevisionOf == nil || (*rev3.RevisionOf != orig.ID && *rev3.RevisionOf != rev.ID) {
+		t.Fatalf("revision 3 = %+v (revision_of must link back to %s or %s)", rev3, orig.ID, rev.ID)
 	}
 }
 

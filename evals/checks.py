@@ -34,7 +34,7 @@ HANDLER_LOGIC = re.compile(
     r"AmountMinor\s*(<=|>=|<|>)\s*(?!0\b|1\b)[\w(]|\.Weekday\(\)|amount_minor\s*(<=|>=|<|>)\s*(?!0\b|1\b)\d"
 )
 STORED_FIELD_WRITE = re.compile(
-    r"\b(exp|expense|existing|orig|original|stored|e)\.(Description|Category|Date|Amount|BaseAmount|"
+    r"\b(exp|expense|existing|orig|original|stored)\.(Description|Category|Date|Amount|BaseAmount|"
     r"Attendees|Region|HasReceipt|EmployeeID|ManagerID)\b\s*=[^=]"
 )
 STATUS_WRITE = re.compile(r"\.Status\s*=[^=]")

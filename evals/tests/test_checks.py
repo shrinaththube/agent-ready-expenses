@@ -36,6 +36,7 @@ def test_policy_logic_in_handler():
 
 def test_submitted_write():
     assert kinds(diff("services/policy/api/server.go", "orig.Description = patch.Description")) == {"submitted_write"}
+    assert kinds(diff("services/policy/api/server.go", "existing.Amount = patch.Amount")) == {"submitted_write"}
     assert kinds(diff("services/policy/api/server.go", "e.Status = contracts.ExpenseStatusApproved")) == {"submitted_write"}
     assert kinds(diff("services/policy/api/server.go", "rev.Description = patch.Description")) == set()
     assert kinds(diff("services/policy/workflow/workflow.go", "e.Status = to")) == set()
