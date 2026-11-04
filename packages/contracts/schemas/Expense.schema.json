@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Expense",
+  "description": "A team expense. Once submitted it is immutable; corrections create a new revision.",
+  "type": "object",
+  "required": [
+    "id",
+    "employee_id",
+    "manager_id",
+    "category",
+    "description",
+    "amount",
+    "base_amount",
+    "date",
+    "has_receipt",
+    "attendees",
+    "region",
+    "status",
+    "revision",
+    "created_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "employee_id": {
+      "type": "string"
+    },
+    "manager_id": {
+      "type": "string"
+    },
+    "category": {
+      "$ref": "ExpenseCategory.schema.json"
+    },
+    "description": {
+      "type": "string"
+    },
+    "amount": {
+      "$ref": "Money.schema.json"
+    },
+    "base_amount": {
+      "$ref": "Money.schema.json",
+      "description": "Amount converted to the base currency (USD) at the expense-date rate."
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "has_receipt": {
+      "type": "boolean"
+    },
+    "attendees": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "region": {
+      "$ref": "Region.schema.json"
+    },
+    "status": {
+      "$ref": "ExpenseStatus.schema.json"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "revision_of": {
+      "type": "string",
+      "description": "Id of the original expense this revises."
+    },
+    "created_at": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

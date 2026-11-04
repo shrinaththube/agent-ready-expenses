@@ -1,0 +1,21 @@
+# Maps changed context files to eval task tags. A change to a mapped path reruns
+# the tagged evals (with context) in context-evals.yml. "*" means every task.
+map:
+  - paths: ["AGENTS.md", "CLAUDE.md", ".cursor/rules/*", ".claude/settings.json", ".claude/agents/*", "scripts/hooks/*"]
+    tags: ["*"]
+  - paths: ["services/policy/AGENTS.md", ".claude/skills/add-approval-rule/*", "docs/decisions/0002-*"]
+    tags: [policy, go]
+  - paths: ["services/receipts/AGENTS.md"]
+    tags: [fx, receipts, python]
+  - paths: ["apps/dashboard/AGENTS.md"]
+    tags: [typescript]
+  - paths: ["packages/contracts/AGENTS.md"]
+    tags: [go, python, typescript]
+  - paths: [".claude/skills/add-currency/*", "docs/decisions/0001-*"]
+    tags: [fx, money]
+  - paths: [".claude/skills/add-report-or-export/*", "docs/report-format.md"]
+    tags: [csv]
+  - paths: [".claude/skills/upgrade-dependency/*", "docs/decisions/0004-*"]
+    tags: [deps]
+  - paths: ["docs/decisions/0003-*"]
+    tags: [workflow, immutability]

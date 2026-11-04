@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Report",
+  "description": "Aggregated spend report in the base currency.",
+  "type": "object",
+  "required": [
+    "rows",
+    "status_counts"
+  ],
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "$ref": "ReportRow.schema.json"
+      }
+    },
+    "status_counts": {
+      "type": "array",
+      "items": {
+        "$ref": "StatusCount.schema.json"
+      }
+    }
+  },
+  "additionalProperties": false
+}

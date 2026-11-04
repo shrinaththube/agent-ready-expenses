@@ -1,0 +1,38 @@
+# Tally approval policies. Policies are data: add or change rules here, and add a
+# rule type under policy/rules/ only when no existing type can express the rule.
+# Rules are evaluated in order; the most restrictive outcome wins
+# (auto_approved < pending_manager < pending_finance < rejected).
+# All amounts are base-currency (USD) minor units: 7500 = $75.00.
+version: 1
+base_currency: USD
+policies:
+  - id: meals-per-diem
+    type: per_person_daily_cap
+    category: meals
+    cap_minor: 7500
+    outcome_over: pending_manager
+
+  - id: manager-over-200
+    type: amount_threshold
+    above_minor: 20000
+    outcome: pending_manager
+
+  - id: finance-at-1000
+    type: amount_threshold
+    at_least_minor: 100000
+    outcome: pending_finance
+
+  - id: travel-needs-receipt
+    type: requires_receipt
+    categories: [travel]
+    outcome: rejected
+
+  - id: alcohol-needs-manager
+    type: category_match
+    categories: [alcohol]
+    outcome: pending_manager
+
+  - id: weekend-software-flag
+    type: weekend
+    categories: [software]
+    outcome: pending_manager

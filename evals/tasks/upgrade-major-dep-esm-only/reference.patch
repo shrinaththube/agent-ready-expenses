@@ -1,0 +1,24 @@
+diff --git a/docs/upgrades/nanoid-5.md b/docs/upgrades/nanoid-5.md
+new file mode 100644
+index 0000000..c3d7083
+--- /dev/null
++++ b/docs/upgrades/nanoid-5.md
+@@ -0,0 +1,18 @@
++# Upgrading nanoid 3 -> 5: not applied (migration notes)
++
++Status: draft, not merged.
++
++## What changes
++nanoid 4 and 5 are ESM-only. `require('nanoid')` throws `ERR_REQUIRE_ESM`.
++
++## What breaks here
++- `apps/dashboard/scripts/seed-demo.cjs` loads it with `require()`, and `apps/dashboard/scripts/check_module_format.sh` fails at version 5.
++- See `docs/decisions/0004-pin-nanoid-commonjs.md`.
++
++## Migration steps
++1. Convert `seed-demo.cjs` to ESM (`.mjs`, `import { nanoid } from "nanoid"`) and update its callers.
++2. Bump `nanoid` to the new major in `apps/dashboard/package.json` and the lockfile.
++3. Run `bash apps/dashboard/scripts/check_module_format.sh` (update its pinned list) and `make test`.
++
++## Risk
++Low runtime risk (ids only), but it is a breaking change to our Node tooling, so it needs its own PR.

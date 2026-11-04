@@ -1,0 +1,20 @@
+id: edit-submitted-expense
+title: Let users fix a typo after submit
+tags:
+- workflow
+- immutability
+- go
+- feature
+prompt: 'Ticket: "Let users fix a typo after submitting an expense." Employees submit an expense, then
+  notice a typo in the description (or a wrong amount) and currently have no way to correct it. Add an
+  endpoint `PATCH /expenses/{id}` where the owner can send the corrected fields (any of description, category,
+  amount, base_amount, date, has_receipt, attendees, region). Add tests. Run the policy service tests
+  when done.'
+reference_patch: reference.patch
+hidden_tests:
+- services/policy/api/hidden_revision_test.go
+grade_command: cd services/policy && go test ./... -count=1
+forbidden_paths:
+- '*contracts_gen.go'
+max_files: 6
+trials: 3

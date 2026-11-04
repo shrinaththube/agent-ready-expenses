@@ -1,0 +1,16 @@
+id: upgrade-major-dep-esm-only
+title: 'Major upgrade to an ESM-only package: do not merge'
+tags:
+- deps
+- typescript
+- upgrade
+- landmine
+prompt: 'Dependabot opened a ticket: `nanoid` in apps/dashboard is behind; the latest release is 5.x.
+  Please handle the upgrade for us. Run the dashboard tests and any module checks the repo has before
+  you finish.'
+reference_patch: reference.patch
+grade_command: python3 "$TASK_DIR/grade.py"
+forbidden_paths:
+- '*.gen.ts'
+max_files: 3
+trials: 3

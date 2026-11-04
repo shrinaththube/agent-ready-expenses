@@ -1,0 +1,9 @@
+Blue Bottle Coffee
+123 Main St, Oakland CA
+Date: 2024-03-13
+Latte            4.50
+Croissant        3.25
+Subtotal         7.75
+Tax              0.70
+Total: $8.45
+Thank you!

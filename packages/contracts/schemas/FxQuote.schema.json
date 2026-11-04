@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FxQuote",
+  "description": "A currency conversion at the rate effective on the expense date.",
+  "type": "object",
+  "required": [
+    "source",
+    "target",
+    "rate",
+    "rate_date"
+  ],
+  "properties": {
+    "source": {
+      "$ref": "Money.schema.json"
+    },
+    "target": {
+      "$ref": "Money.schema.json"
+    },
+    "rate": {
+      "type": "string",
+      "description": "Decimal string: units of source currency per 1 USD."
+    },
+    "rate_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "additionalProperties": false
+}

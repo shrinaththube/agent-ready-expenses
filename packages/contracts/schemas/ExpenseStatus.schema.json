@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExpenseStatus",
+  "description": "Workflow state of an expense.",
+  "type": "string",
+  "enum": [
+    "draft",
+    "submitted",
+    "auto_approved",
+    "pending_manager",
+    "pending_finance",
+    "approved",
+    "rejected",
+    "reimbursed"
+  ]
+}

@@ -1,0 +1,18 @@
+id: jpy-rounding-bug
+title: JPY shown and exported with 2 decimals
+tags:
+- money
+- typescript
+- bug
+prompt: Users report that Japanese yen amounts show up with two decimals (1500 JPY appears as "15.00")
+  in the dashboard and in the CSV export, while KWD should show three decimals (12.345). Fix this in the
+  dashboard and add tests. Run the dashboard tests when done.
+setup_patch: setup.patch
+reference_patch: reference.patch
+hidden_tests:
+- apps/dashboard/test/hidden_jpy.test.ts
+grade_command: cd apps/dashboard && npx vitest run
+forbidden_paths:
+- '*.gen.ts'
+max_files: 4
+trials: 3

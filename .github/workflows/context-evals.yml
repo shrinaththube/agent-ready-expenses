@@ -1,0 +1,70 @@
+name: context-evals
+# Changing an instruction file or skill reruns the affected evals with context and compares to the baseline.
+on:
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - "**/AGENTS.md"
+      - "CLAUDE.md"
+      - ".cursor/**"
+      - ".claude/**"
+      - "docs/decisions/**"
+      - "docs/report-format.md"
+      - "scripts/hooks/**"
+      - "evals/context-map.yaml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.22", cache-dependency-path: services/policy/go.sum }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: map changed files to eval tags
+        id: tags
+        run: |
+          pip install pyyaml
+          git diff --name-only origin/${{ github.base_ref }}...HEAD | python scripts/context_tags.py | tee tags.txt
+          echo "tasks=$(cat tags.txt)" >> "$GITHUB_OUTPUT"
+      - name: skip when there is nothing to run or no API key
+        if: steps.tags.outputs.tasks == 'none' || env.ANTHROPIC_API_KEY == ''
+        run: echo "::notice::Skipping evals (no affected tasks, or ANTHROPIC_API_KEY is not set for this repository)."
+      - name: run affected evals with context
+        if: steps.tags.outputs.tasks != 'none' && env.ANTHROPIC_API_KEY != ''
+        run: |
+          npm i -g @anthropic-ai/claude-code
+          pip install -e "services/receipts[dev]" pyyaml
+          (cd apps/dashboard && npm ci)
+          TASKS="${{ steps.tags.outputs.tasks }}"
+          ARGS=(--mode with-context --out evals/results/pr --trials 2)
+          [ "$TASKS" != "all" ] && ARGS+=(--tasks "$TASKS")
+          python evals/run_evals.py "${ARGS[@]}"
+      - name: compare with baseline
+        id: compare
+        if: steps.tags.outputs.tasks != 'none' && env.ANTHROPIC_API_KEY != ''
+        run: |
+          set +e
+          python evals/report.py --compare evals/results/baseline.json evals/results/pr/*.jsonl > comparison.md
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat comparison.md
+      - name: comment on the PR
+        if: steps.compare.outcome != 'skipped'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = "### Context evals vs baseline\n\n" + require("fs").readFileSync("comparison.md", "utf8");
+            await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+      - name: fail on pass-rate drop or rule violation
+        if: steps.compare.outputs.status != '' && steps.compare.outputs.status != '0'
+        run: exit 1

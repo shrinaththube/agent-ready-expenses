@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Money",
+  "description": "Integer minor units plus an ISO 4217 code. Never a float.",
+  "type": "object",
+  "required": [
+    "amount_minor",
+    "currency"
+  ],
+  "properties": {
+    "amount_minor": {
+      "type": "integer",
+      "description": "Amount in the currency's minor unit (cents, yen, fils)."
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    }
+  },
+  "additionalProperties": false
+}

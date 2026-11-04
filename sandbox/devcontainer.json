@@ -1,0 +1,10 @@
+{
+  "name": "tally-sandbox",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "remoteEnv": {
+    "HTTP_PROXY": "http://proxy:8080",
+    "HTTPS_PROXY": "http://proxy:8080"
+  }
+}

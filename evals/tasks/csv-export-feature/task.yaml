@@ -1,0 +1,19 @@
+id: csv-export-feature
+title: Monthly report CSV export
+tags:
+- csv
+- typescript
+- feature
+prompt: 'Add a monthly report CSV export to the dashboard: export `monthlyReportCsv(rows: ReportRow[]):
+  string` from apps/dashboard/src/csv.ts, following the repo''s CSV format spec, and wire an "Export monthly
+  report CSV" button on the Reports screen. Add tests, including a golden-file test. Run the dashboard
+  tests when done.'
+reference_patch: reference.patch
+hidden_tests:
+- apps/dashboard/test/hidden_monthly.test.ts
+- apps/dashboard/test/golden/hidden-monthly.csv
+grade_command: cd apps/dashboard && npx vitest run
+forbidden_paths:
+- '*.gen.ts'
+max_files: 6
+trials: 3

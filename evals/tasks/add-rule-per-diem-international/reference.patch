@@ -1,0 +1,151 @@
+diff --git a/docs/policy-table.md b/docs/policy-table.md
+index 31d6eb7..1f990a5 100644
+--- a/docs/policy-table.md
++++ b/docs/policy-table.md
+@@ -4,7 +4,8 @@ Source of truth: `services/policy/policies/policies.yaml`. This table is documen
+ 
+ | Policy id | Rule type | Applies to | Condition | Outcome |
+ |---|---|---|---|---|
+-| `meals-per-diem` | `per_person_daily_cap` | meals | (same-day prior spend + amount) > $75.00 × attendees | `pending_manager` |
++| `meals-per-diem` | `per_person_daily_cap` | meals, region domestic | (same-day prior spend + amount) > $75.00 × attendees | `pending_manager` |
++| `meals-per-diem-international` | `per_person_daily_cap` | meals, region international | (same-day prior spend + amount) > $120.00 × attendees | `pending_manager` |
+ | `manager-over-200` | `amount_threshold` | all | amount > $200.00 | `pending_manager` |
+ | `finance-at-1000` | `amount_threshold` | all | amount ≥ $1,000.00 | `pending_finance` |
+ | `travel-needs-receipt` | `requires_receipt` | travel | no receipt | `rejected` |
+diff --git a/fixtures/policy/cases.json b/fixtures/policy/cases.json
+index fe84e61..a168e06 100644
+--- a/fixtures/policy/cases.json
++++ b/fixtures/policy/cases.json
+@@ -405,5 +405,81 @@
+     "prior_day_minor": 0,
+     "expect_outcome": "auto_approved",
+     "expect_rules": []
++  },
++  {
++    "name": "international meal exactly at $120 cap",
++    "expense": {
++      "employee_id": "e1",
++      "manager_id": "m1",
++      "category": "meals",
++      "description": "fixture",
++      "amount": {
++        "amount_minor": 12000,
++        "currency": "USD"
++      },
++      "base_amount": {
++        "amount_minor": 12000,
++        "currency": "USD"
++      },
++      "date": "2024-03-13",
++      "has_receipt": true,
++      "attendees": 1,
++      "region": "international"
++    },
++    "prior_day_minor": 0,
++    "expect_outcome": "auto_approved",
++    "expect_rules": []
++  },
++  {
++    "name": "international meal one cent over $120 cap",
++    "expense": {
++      "employee_id": "e1",
++      "manager_id": "m1",
++      "category": "meals",
++      "description": "fixture",
++      "amount": {
++        "amount_minor": 12001,
++        "currency": "USD"
++      },
++      "base_amount": {
++        "amount_minor": 12001,
++        "currency": "USD"
++      },
++      "date": "2024-03-13",
++      "has_receipt": true,
++      "attendees": 1,
++      "region": "international"
++    },
++    "prior_day_minor": 0,
++    "expect_outcome": "pending_manager",
++    "expect_rules": [
++      "meals-per-diem-international"
++    ]
++  },
++  {
++    "name": "domestic meal still capped at $75",
++    "expense": {
++      "employee_id": "e1",
++      "manager_id": "m1",
++      "category": "meals",
++      "description": "fixture",
++      "amount": {
++        "amount_minor": 7501,
++        "currency": "USD"
++      },
++      "base_amount": {
++        "amount_minor": 7501,
++        "currency": "USD"
++      },
++      "date": "2024-03-13",
++      "has_receipt": true,
++      "attendees": 1,
++      "region": "domestic"
++    },
++    "prior_day_minor": 0,
++    "expect_outcome": "pending_manager",
++    "expect_rules": [
++      "meals-per-diem"
++    ]
+   }
+ ]
+\ No newline at end of file
+diff --git a/services/policy/policies/policies.yaml b/services/policy/policies/policies.yaml
+index f72b012..caff3b0 100644
+--- a/services/policy/policies/policies.yaml
++++ b/services/policy/policies/policies.yaml
+@@ -10,6 +10,14 @@ policies:
+     type: per_person_daily_cap
+     category: meals
+     cap_minor: 7500
++    region: domestic
++    outcome_over: pending_manager
++
++  - id: meals-per-diem-international
++    type: per_person_daily_cap
++    category: meals
++    cap_minor: 12000
++    region: international
+     outcome_over: pending_manager
+ 
+   - id: manager-over-200
+diff --git a/services/policy/policy/rules/per_person_daily_cap.go b/services/policy/policy/rules/per_person_daily_cap.go
+index 9cfa327..61ed948 100644
+--- a/services/policy/policy/rules/per_person_daily_cap.go
++++ b/services/policy/policy/rules/per_person_daily_cap.go
+@@ -25,6 +25,7 @@ type perPersonDailyCap struct {
+ 	ID_         string            `yaml:"id"`
+ 	Category    string            `yaml:"category"`
+ 	CapMinor    int64             `yaml:"cap_minor"`
++	Region      string            `yaml:"region"` // optional: domestic | international; empty matches both
+ 	OutcomeOver contracts.Outcome `yaml:"outcome_over"`
+ }
+ 
+@@ -33,6 +34,9 @@ func newPerPersonDailyCap(n *yaml.Node) (Rule, error) {
+ 	if err := n.Decode(&r); err != nil {
+ 		return nil, fmt.Errorf("per_person_daily_cap: %w", err)
+ 	}
++	if r.Region != "" && r.Region != string(contracts.RegionDomestic) && r.Region != string(contracts.RegionInternational) {
++		return nil, errors.New("per_person_daily_cap: region must be domestic or international")
++	}
+ 	if r.Category == "" || r.CapMinor <= 0 {
+ 		return nil, errors.New("per_person_daily_cap: category and positive cap_minor required")
+ 	}
+@@ -45,7 +49,7 @@ func newPerPersonDailyCap(n *yaml.Node) (Rule, error) {
+ func (r *perPersonDailyCap) ID() string { return r.ID_ }
+ 
+ func (r *perPersonDailyCap) Evaluate(x contracts.Expense, c Context) (Result, bool) {
+-	if string(x.Category) != r.Category {
++	if string(x.Category) != r.Category || (r.Region != "" && string(x.Region) != r.Region) {
+ 		return Result{}, false
+ 	}
+ 	attendees := x.Attendees

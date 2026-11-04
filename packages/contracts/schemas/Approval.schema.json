@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Approval",
+  "description": "A manager or finance decision on a pending expense.",
+  "type": "object",
+  "required": [
+    "expense_id",
+    "actor_id",
+    "actor_role",
+    "action",
+    "reason",
+    "at"
+  ],
+  "properties": {
+    "expense_id": {
+      "type": "string"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "actor_role": {
+      "$ref": "ActorRole.schema.json"
+    },
+    "action": {
+      "$ref": "ApprovalAction.schema.json"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "at": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+evals/work/
+observability/data/
+*.log

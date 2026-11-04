@@ -1,0 +1,22 @@
+id: receipt-parse-currency-symbol
+title: "Parse \u20AC and EUR totals with a confidence score"
+tags:
+- receipts
+- python
+- parsing
+- feature
+prompt: "The receipt parser only understands \"$\" and \"USD\". Receipts with \"\u20AC45,90\", \"TOTAL\
+  \ EUR 1.234,50\", \"\xA312.00\", \"\xA51,500\" or ISO codes like \"KWD 12.345\" are parsed with the\
+  \ wrong currency or amount. Teach the parser to extract the right total (in minor units) and currency\
+  \ for symbols and ISO codes, including European decimal commas, and keep the confidence score meaningful\
+  \ (a clearly labelled total with currency and date should score at least 0.8; a bare \"Total 45,90\"\
+  \ must stay under 0.6). Add tests. Run the receipts tests when done."
+reference_patch: reference.patch
+hidden_tests:
+- services/receipts/tests/test_hidden_currency.py
+grade_command: cd services/receipts && python3 -m pytest -q
+forbidden_paths:
+- services/receipts/legacy/
+- '*_gen.py'
+max_files: 4
+trials: 3

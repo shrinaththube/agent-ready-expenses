@@ -1,0 +1,6 @@
+month,employee_id,category,count,total,currency
+2024-01,'=SUM(A1),meals,4,0.05,USD
+2024-01,"e,1",travel,2,12.345,KWD
+2024-01,e2,meals,1,1500,JPY
+2024-02,e1,meals,10,99999.99,USD
+2024-02,e1,travel,1,7.00,USD

@@ -1,0 +1,107 @@
+diff --git a/apps/dashboard/src/components/Reports.tsx b/apps/dashboard/src/components/Reports.tsx
+index 9226997..e92de84 100644
+--- a/apps/dashboard/src/components/Reports.tsx
++++ b/apps/dashboard/src/components/Reports.tsx
+@@ -1,7 +1,7 @@
+ import { useEffect, useState } from "react";
+ import type { TallyClient } from "../api";
+ import type { Report } from "../contracts.gen";
+-import { expensesCsv } from "../csv";
++import { expensesCsv, monthlyReportCsv } from "../csv";
+ import { monthLabel } from "../month";
+ import { formatMoney } from "../money";
+ 
+@@ -19,6 +19,16 @@ export function Reports({ client }: { client: TallyClient }) {
+     URL.revokeObjectURL(url);
+   }
+ 
++  function exportMonthly() {
++    if (!report) return;
++    const url = URL.createObjectURL(new Blob([monthlyReportCsv(report.rows)], { type: "text/csv;charset=utf-8" }));
++    const a = document.createElement("a");
++    a.href = url;
++    a.download = "monthly-report.csv";
++    a.click();
++    URL.revokeObjectURL(url);
++  }
++
+   if (!report) return <p>Loading report...</p>;
+   return (
+     <section>
+@@ -34,7 +44,8 @@ export function Reports({ client }: { client: TallyClient }) {
+         </tbody>
+       </table>
+       <p>{report.status_counts.map((s) => `${s.status}: ${s.count}`).join(" | ")}</p>
+-      <button onClick={exportCsv}>Export expenses CSV</button>
++      <button onClick={exportCsv}>Export expenses CSV</button>{" "}
++      <button onClick={exportMonthly}>Export monthly report CSV</button>
+     </section>
+   );
+ }
+diff --git a/apps/dashboard/src/csv.ts b/apps/dashboard/src/csv.ts
+index a1cd412..cdf912d 100644
+--- a/apps/dashboard/src/csv.ts
++++ b/apps/dashboard/src/csv.ts
+@@ -1,4 +1,4 @@
+-import type { Expense } from "./contracts.gen";
++import type { Expense, ReportRow } from "./contracts.gen";
+ import { formatAmount } from "./money";
+ 
+ // Format spec: docs/report-format.md (RFC 4180 quoting, CRLF, UTF-8 without BOM,
+@@ -33,3 +33,15 @@ export function expensesCsv(expenses: Expense[]): string {
+     ]),
+   );
+ }
++
++export const MONTHLY_HEADER = ["month", "employee_id", "category", "count", "total", "currency"];
++
++/** Monthly report export; format in docs/report-format.md. Rows sorted by month, employee, category. */
++export function monthlyReportCsv(rows: ReportRow[]): string {
++  const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
++  const sorted = [...rows].sort((a, b) => cmp(a.month, b.month) || cmp(a.employee_id, b.employee_id) || cmp(a.category, b.category));
++  return toCsv(
++    MONTHLY_HEADER,
++    sorted.map((r) => [r.month, r.employee_id, r.category, String(r.count), formatAmount(r.total), r.total.currency]),
++  );
++}
+diff --git a/apps/dashboard/test/csv.test.ts b/apps/dashboard/test/csv.test.ts
+index 12436fd..17d2a94 100644
+--- a/apps/dashboard/test/csv.test.ts
++++ b/apps/dashboard/test/csv.test.ts
+@@ -1,6 +1,7 @@
+ import { readFileSync } from "node:fs";
+ import { describe, expect, it } from "vitest";
+-import { csvCell, expensesCsv } from "../src/csv";
++import { csvCell, expensesCsv, monthlyReportCsv } from "../src/csv";
++import type { ReportRow } from "../src/contracts.gen";
+ import { expenses } from "./fixtures";
+ 
+ describe("csv", () => {
+@@ -25,3 +26,17 @@ describe("csv", () => {
+     ["@x", "'@x"],
+   ])("csvCell(%j) = %j", (input, want) => expect(csvCell(input)).toBe(want));
+ });
++
++describe("monthlyReportCsv", () => {
++  const row = (month: string, employee_id: string, category: string, count: number, amount_minor: number): ReportRow => ({
++    month, employee_id, category, count, total: { amount_minor, currency: "USD" },
++  });
++  it("matches the golden file and sorts rows", () => {
++    const golden = readFileSync(new URL("./golden/monthly-report.csv", import.meta.url), "utf8");
++    const rows = [row("2024-03", "e2", "travel", 3, 123456), row("2024-03", "e1", "meals", 1, 4200), row("2024-02", "e1", "meals", 2, 8450)];
++    expect(monthlyReportCsv(rows)).toBe(golden);
++  });
++  it("escapes formula injection in text cells", () => {
++    expect(monthlyReportCsv([row("2024-03", "=cmd|' /C calc'!A0", "meals", 1, 100)])).toContain(",'=cmd|' /C calc'!A0,");
++  });
++});
+diff --git a/apps/dashboard/test/golden/monthly-report.csv b/apps/dashboard/test/golden/monthly-report.csv
+new file mode 100644
+index 0000000..9205c22
+--- /dev/null
++++ b/apps/dashboard/test/golden/monthly-report.csv
+@@ -0,0 +1,4 @@
++month,employee_id,category,count,total,currency
++2024-02,e1,meals,2,84.50,USD
++2024-03,e1,meals,1,42.00,USD
++2024-03,e2,travel,3,1234.56,USD

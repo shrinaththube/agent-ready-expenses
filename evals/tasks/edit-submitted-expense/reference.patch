@@ -1,0 +1,123 @@
+diff --git a/services/policy/api/server.go b/services/policy/api/server.go
+index fea5f51..c9efa0b 100644
+--- a/services/policy/api/server.go
++++ b/services/policy/api/server.go
+@@ -31,6 +31,7 @@ func NewServer(s *store.Memory, e *policy.Engine) *Server {
+ 	srv.mux.HandleFunc("POST /expenses", srv.create)
+ 	srv.mux.HandleFunc("GET /expenses", srv.list)
+ 	srv.mux.HandleFunc("GET /expenses/{id}", srv.get)
++	srv.mux.HandleFunc("PATCH /expenses/{id}", srv.revise)
+ 	srv.mux.HandleFunc("POST /expenses/{id}/submit", srv.submit)
+ 	srv.mux.HandleFunc("POST /expenses/{id}/approve", srv.decide(contracts.ExpenseStatusApproved))
+ 	srv.mux.HandleFunc("POST /expenses/{id}/reject", srv.decide(contracts.ExpenseStatusRejected))
+@@ -147,6 +148,73 @@ func (s *Server) get(w http.ResponseWriter, r *http.Request) {
+ 	writeJSON(w, http.StatusOK, e)
+ }
+ 
++type expensePatch struct {
++	Description *string                    `json:"description"`
++	Category    *contracts.ExpenseCategory `json:"category"`
++	Amount      *contracts.Money           `json:"amount"`
++	BaseAmount  *contracts.Money           `json:"base_amount"`
++	Date        *string                    `json:"date"`
++	HasReceipt  *bool                      `json:"has_receipt"`
++	Attendees   *int64                     `json:"attendees"`
++	Region      *contracts.Region          `json:"region"`
++}
++
++// revise corrects an expense. Submitted expenses are immutable, so the correction
++// is a new draft revision linked to the original; the original is never touched.
++func (s *Server) revise(w http.ResponseWriter, r *http.Request) {
++	a, err := actor(r)
++	if err != nil {
++		writeErr(w, err)
++		return
++	}
++	var p expensePatch
++	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
++		writeErr(w, bad("invalid JSON: %v", err))
++		return
++	}
++	orig, err := s.Store.Get(r.PathValue("id"))
++	if err != nil {
++		writeErr(w, err)
++		return
++	}
++	if a.ID != orig.EmployeeID {
++		writeErr(w, fmt.Errorf("only the owner may revise: %w", workflow.ErrForbidden))
++		return
++	}
++	rev, err := s.Store.Revise(orig.ID, func(rev *contracts.Expense) error {
++		if p.Description != nil {
++			rev.Description = *p.Description
++		}
++		if p.Category != nil {
++			rev.Category = *p.Category
++		}
++		if p.Amount != nil {
++			rev.Amount = *p.Amount
++		}
++		if p.BaseAmount != nil {
++			rev.BaseAmount = *p.BaseAmount
++		}
++		if p.Date != nil {
++			rev.Date = *p.Date
++		}
++		if p.HasReceipt != nil {
++			rev.HasReceipt = *p.HasReceipt
++		}
++		if p.Attendees != nil {
++			rev.Attendees = *p.Attendees
++		}
++		if p.Region != nil {
++			rev.Region = *p.Region
++		}
++		return validate(*rev)
++	})
++	if err != nil {
++		writeErr(w, err)
++		return
++	}
++	writeJSON(w, http.StatusCreated, rev)
++}
++
+ func (s *Server) context(e contracts.Expense) rules.Context {
+ 	return rules.Context{PriorDayMinor: s.Store.PriorDaySpend(e.EmployeeID, string(e.Category), e.Date, e.ID)}
+ }
+diff --git a/services/policy/store/memory.go b/services/policy/store/memory.go
+index 1997187..b8d035c 100644
+--- a/services/policy/store/memory.go
++++ b/services/policy/store/memory.go
+@@ -51,6 +51,32 @@ func (m *Memory) Get(id string) (contracts.Expense, error) {
+ 	return e, nil
+ }
+ 
++// Revise creates a new draft that corrects `origID` without touching the original.
++// The revision links to the root expense via RevisionOf and bumps Revision.
++func (m *Memory) Revise(origID string, apply func(*contracts.Expense) error) (contracts.Expense, error) {
++	m.mu.Lock()
++	defer m.mu.Unlock()
++	orig, ok := m.byID[origID]
++	if !ok {
++		return contracts.Expense{}, fmt.Errorf("%s: %w", origID, ErrNotFound)
++	}
++	rev := orig
++	if err := apply(&rev); err != nil {
++		return contracts.Expense{}, err
++	}
++	root := orig.ID
++	if orig.RevisionOf != nil {
++		root = *orig.RevisionOf
++	}
++	m.seq++
++	rev.ID = fmt.Sprintf("exp-%04d", m.seq)
++	rev.Status = contracts.ExpenseStatusDraft
++	rev.Revision = orig.Revision + 1
++	rev.RevisionOf = &root
++	m.byID[rev.ID] = rev
++	return rev, nil
++}
++
+ // List returns expenses sorted by id, filtered by employee and status when non-empty.
+ func (m *Memory) List(employeeID, status string) []contracts.Expense {
+ 	m.mu.Lock()

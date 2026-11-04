@@ -1,0 +1,20 @@
+id: fx-wrong-date-bug
+title: Conversion uses the wrong day's rate
+tags:
+- fx
+- python
+- bug
+prompt: Finance noticed that reimbursement amounts for March expenses changed after the June rate file
+  was added to fixtures/fx. A EUR 100.00 expense dated 2024-03-15 should convert using the 2024-03-15
+  rates, but the converted USD amount follows a different day's rate. Fix the bug in the receipts service
+  and add a regression test. Run the receipts tests when done.
+setup_patch: setup.patch
+reference_patch: reference.patch
+hidden_tests:
+- services/receipts/tests/test_hidden_fx_date.py
+grade_command: cd services/receipts && python3 -m pytest -q
+forbidden_paths:
+- services/receipts/legacy/
+- '*_gen.py'
+max_files: 3
+trials: 3

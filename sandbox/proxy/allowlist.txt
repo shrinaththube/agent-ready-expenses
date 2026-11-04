@@ -1,0 +1,8 @@
+# Hosts the sandbox may reach. Everything else is blocked and logged.
+api.anthropic.com:443 tunnel          # the agent itself (HTTPS passthrough)
+github.com:443 tunnel
+registry.npmjs.org:443 tunnel
+proxy.golang.org:443 tunnel
+pypi.org:443 tunnel
+files.pythonhosted.org:443 tunnel
+api.reimburse.tally.test upstream=https   # reimbursement API: plain HTTP in, secret swapped, HTTPS out
