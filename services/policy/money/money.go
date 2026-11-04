@@ -11,7 +11,7 @@ import (
 var minorDigits = map[string]int{
 	"USD": 2, "EUR": 2, "GBP": 2, "CAD": 2, "INR": 2,
 	"JPY": 0,
-	"KWD": 3,
+	"KWD": 3, "BHD": 3,
 }
 
 // MinorDigits returns the number of decimal digits in the currency's minor unit.

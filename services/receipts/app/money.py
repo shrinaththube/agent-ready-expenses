@@ -3,7 +3,7 @@
 from decimal import ROUND_HALF_EVEN, Decimal
 
 # ISO 4217 minor digits. Unlisted currencies default to 2.
-MINOR_DIGITS = {"USD": 2, "EUR": 2, "GBP": 2, "CAD": 2, "INR": 2, "JPY": 0, "KWD": 3}
+MINOR_DIGITS = {"USD": 2, "EUR": 2, "GBP": 2, "CAD": 2, "INR": 2, "JPY": 0, "KWD": 3, "BHD": 3}
 
 
 def minor_digits(currency: str) -> int:

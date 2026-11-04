@@ -14,6 +14,7 @@ func TestDecimal(t *testing.T) {
 		{"sub unit", 5, "USD", "0.05"},
 		{"jpy has no decimals", 1500, "JPY", "1500"},
 		{"kwd has three", 123456, "KWD", "123.456"},
+		{"bhd has three", 3760, "BHD", "3.760"},
 		{"negative", -250, "EUR", "-2.50"},
 	}
 	for _, tt := range tests {

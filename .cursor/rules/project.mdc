@@ -1,0 +1,8 @@
+---
+description: Tally project rules
+alwaysApply: true
+---
+
+Read `AGENTS.md` at the repo root before changing code, then the `AGENTS.md` in the directory you are working in. They are the source of truth; this file only points to them.
+
+Non-negotiable: money is integer minor units plus a currency code (no floats); policies live in `services/policy/policies/policies.yaml`; submitted expenses are immutable; never hand-edit generated files.

@@ -41,6 +41,7 @@ def test_unknown_currency_raises():
         (1000, "USD", "JPY", 1495),  # 10 USD -> 1495 JPY (0 minor digits)
         (1000, "USD", "KWD", 3070),  # 10 USD -> 3.070 KWD (3 minor digits)
         (1000, "USD", "USD", 1000),
+        (1000, "USD", "BHD", 3760),  # 10 USD -> 3.760 BHD (3 minor digits)
     ],
 )
 def test_minor_digit_handling(amount, src, tgt, expected):
@@ -51,7 +52,12 @@ def test_minor_digit_handling(amount, src, tgt, expected):
 
 
 def test_round_trip_display():
-    for cur, minor, text in [("JPY", 1500, "1500"), ("KWD", 12345, "12.345"), ("USD", 5, "0.05")]:
+    for cur, minor, text in [
+        ("JPY", 1500, "1500"),
+        ("KWD", 12345, "12.345"),
+        ("BHD", 3760, "3.760"),
+        ("USD", 5, "0.05"),
+    ]:
         assert format_decimal(minor, cur) == text
         assert to_minor(Decimal(text), cur) == minor
 

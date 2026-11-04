@@ -2,7 +2,7 @@ import type { Money } from "./contracts.gen";
 
 // Money is integer minor units + ISO currency code. No floats: amounts are
 // formatted from integers by string manipulation, and parsed from strings.
-const MINOR_DIGITS: Record<string, number> = { USD: 2, EUR: 2, GBP: 2, CAD: 2, INR: 2, JPY: 0, KWD: 3 };
+const MINOR_DIGITS: Record<string, number> = { USD: 2, EUR: 2, GBP: 2, CAD: 2, INR: 2, JPY: 0, KWD: 3, BHD: 3 };
 
 export function minorDigits(currency: string): number {
   return MINOR_DIGITS[currency] ?? 2;
