@@ -1,0 +1,13 @@
+diff --git a/services/receipts/app/fx.py b/services/receipts/app/fx.py
+index 5c4e9fd..3a977b6 100644
+--- a/services/receipts/app/fx.py
++++ b/services/receipts/app/fx.py
+@@ -38,7 +38,7 @@ class FxService:
+         raise RateNotFound(f"no FX rates on or within {MAX_FALLBACK_DAYS} days before {on}")
+ 
+     def convert(self, amount_minor: int, source: str, target: str, on: date) -> FxQuote:
+-        rate_date, rates = self.rates_on(on)
++        rate_date, rates = self.rates_on(max(self._rates))
+         for c in (source, target):
+             if c not in rates:
+                 raise RateNotFound(f"no {c} rate for {rate_date}")

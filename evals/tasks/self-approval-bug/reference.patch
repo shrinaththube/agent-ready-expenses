@@ -1,0 +1,14 @@
+diff --git b/services/policy/workflow/workflow.go a/services/policy/workflow/workflow.go
+index f443fa1..9f1421e 100644
+--- b/services/policy/workflow/workflow.go
++++ a/services/policy/workflow/workflow.go
+@@ -37,6 +37,9 @@ func Authorize(e contracts.Expense, a Actor, to S) error {
+ 			}
+ 			return nil
+ 		}
++		if a.ID == e.EmployeeID {
++			return fmt.Errorf("cannot decide your own expense: %w", ErrForbidden)
++		}
+ 		want := contracts.ActorRoleManager
+ 		if e.Status == contracts.ExpenseStatusPendingFinance {
+ 			want = contracts.ActorRoleFinance

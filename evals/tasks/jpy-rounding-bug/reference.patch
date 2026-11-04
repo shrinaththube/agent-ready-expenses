@@ -1,0 +1,13 @@
+diff --git b/apps/dashboard/src/money.ts a/apps/dashboard/src/money.ts
+index 739f79a..3d38886 100644
+--- b/apps/dashboard/src/money.ts
++++ a/apps/dashboard/src/money.ts
+@@ -10,7 +10,7 @@ export function minorDigits(currency: string): number {
+ 
+ /** Decimal string with the currency's own digits: 1500 JPY -> "1500", 12345 KWD -> "12.345". */
+ export function formatAmount(m: Money): string {
+-  const digits = 2;
++  const digits = minorDigits(m.currency);
+   const neg = m.amount_minor < 0;
+   let s = String(Math.abs(m.amount_minor));
+   if (digits > 0) {

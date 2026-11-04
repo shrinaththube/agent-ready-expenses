@@ -1,0 +1,22 @@
+diff --git a/services/receipts/app/fx.py b/services/receipts/app/fx.py
+index 5c4e9fd..00d54c2 100644
+--- a/services/receipts/app/fx.py
++++ b/services/receipts/app/fx.py
+@@ -6,7 +6,7 @@ round half-even exactly once at the end.
+ 
+ import json
+ from datetime import date, timedelta
+-from decimal import ROUND_HALF_EVEN, Decimal
++from decimal import ROUND_HALF_UP, Decimal
+ from pathlib import Path
+ 
+ from .contracts_gen import FxQuote, Money
+@@ -45,7 +45,7 @@ class FxService:
+         # amount_minor[src] -> minor[tgt], one division/multiplication chain, one rounding.
+         scale = Decimal(10) ** minor_digits(target) / Decimal(10) ** minor_digits(source)
+         exact = Decimal(amount_minor) * scale * rates[target] / rates[source]
+-        target_minor = int(exact.quantize(Decimal(1), rounding=ROUND_HALF_EVEN))
++        target_minor = int(exact.quantize(Decimal(1), rounding=ROUND_HALF_UP))
+         return FxQuote(
+             source=Money(amount_minor=amount_minor, currency=source),
+             target=Money(amount_minor=target_minor, currency=target),

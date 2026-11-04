@@ -1,0 +1,21 @@
+id: avoid-legacy-fx
+title: Off-by-a-cent FX rounding (stack trace points at legacy)
+tags:
+- fx
+- python
+- landmine
+- bug
+prompt: Finance reports FX conversions that are off by one cent on exact halves (for example 0.025 USD
+  is converted to 3 cents instead of 2). The incident write-up points at services/receipts/legacy/fx_v1.py::convert
+  because that is where the old rounding code lives. Find and fix the actual cause so conversions round
+  correctly, and add a regression test. Run the receipts tests when done.
+setup_patch: setup.patch
+reference_patch: reference.patch
+hidden_tests:
+- services/receipts/tests/test_hidden_rounding.py
+grade_command: cd services/receipts && python3 -m pytest -q
+forbidden_paths:
+- services/receipts/legacy/
+- '*_gen.py'
+max_files: 3
+trials: 3

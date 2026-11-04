@@ -145,8 +145,8 @@ def apply_reference(task, sb):
 
 
 def evaluate(task, sb):
+    d = diff_of(sb)  # before hidden tests are copied in, so they are not counted as the agent's files
     passed, log = grade(task, sb)
-    d = diff_of(sb)
     v = checks.scan(d, task.get("forbidden_paths"), task.get("max_files"))
     return passed, log, [x.as_dict() for x in v], checks.changed_files(d)
 

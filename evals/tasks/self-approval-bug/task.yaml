@@ -1,0 +1,19 @@
+id: self-approval-bug
+title: Manager can approve their own expense
+tags:
+- policy
+- go
+- security
+- bug
+prompt: A manager who submits an expense that lands in the manager queue can approve it themselves, which
+  breaks our controls. Fix the authorization so nobody can approve or reject their own expense (any role),
+  and add a test that also asserts what ends up in the audit log. Run the policy service tests when done.
+setup_patch: setup.patch
+reference_patch: reference.patch
+hidden_tests:
+- services/policy/api/hidden_selfapprove_test.go
+grade_command: cd services/policy && go test ./... -count=1
+forbidden_paths:
+- '*contracts_gen.go'
+max_files: 4
+trials: 3
