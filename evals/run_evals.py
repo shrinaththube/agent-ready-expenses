@@ -148,7 +148,7 @@ def evaluate(task, sb):
     d = diff_of(sb)  # before hidden tests are copied in, so they are not counted as the agent's files
     passed, log = grade(task, sb)
     v = checks.scan(d, task.get("forbidden_paths"), task.get("max_files"))
-    return passed, log, [x.as_dict() for x in v], checks.changed_files(d)
+    return passed, log, [x.as_dict() for x in v], checks.changed_files(d), d
 
 
 def dry_run(ids, work):
@@ -160,7 +160,7 @@ def dry_run(ids, work):
         pre, _ = grade(task, sb)
         shutil.rmtree(sb / "apps/dashboard/node_modules", ignore_errors=True) if False else None
         apply_reference(task, sb)
-        post, log, viol, files = evaluate(task, sb)
+        post, log, viol, files, _ = evaluate(task, sb)
         ok = (not pre) and post and not viol and len(files) <= task.get("max_files", 99)
         bad += not ok
         print(f"{tid:36} {'yes' if not pre else 'NO':12} {'yes' if post else 'NO':17} {len(viol):<10} {len(files)}  {'' if ok else '<-- FAIL'}")
@@ -210,7 +210,12 @@ def main():
                             m = {"tool_calls": 0, "calls_before_first_edit": 0, "tokens": {}, "cost_usd": 0, "turns": 0, "duration_s": 0}
                         else:
                             m = run_agent(task, mode, sb, args, run_id, trial)
-                        passed, log, viol, files = evaluate(task, sb)
+                        passed, log, viol, files, d = evaluate(task, sb)
+                        art = out / "artifacts"
+                        art.mkdir(exist_ok=True)
+                        stem = f"{run_id}-{tid}-{mode}-{trial}"
+                        (art / f"{stem}.patch").write_text(d)
+                        (art / f"{stem}.grade.log").write_text(log)
                         rec = {"run_id": run_id, "agent": args.agent, "task": tid, "mode": mode, "trial": trial,
                                "tags": task.get("tags", []), "passed": passed, "violations": viol,
                                "files_changed": len(files), **m}

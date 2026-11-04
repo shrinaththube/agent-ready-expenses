@@ -27,9 +27,11 @@ class Violation:
 
 MONEYISH = re.compile(r"amount|total|price|money|cost|minor|cents|usd|fee|reimburs|balance", re.I)
 FLOATISH = re.compile(r"\bfloat(32|64)?\b|\bparseFloat\b|\.toFixed\(|\bNumber\(\s*[^)]*(amount|total|price)", re.I)
+# Approval logic: category/region equality (inequality chains are enum validation), amount comparisons
+# against anything but the 0/1 of input validation, weekday checks.
 HANDLER_LOGIC = re.compile(
-    r"\.(Category|Region)\s*(==|!=)(?!\s*nil\b)|AmountMinor\s*(<=|>=|<|>)\s*[\w(]|\.Weekday\(\)|"
-    r"amount_minor\s*(<=|>=|<|>)\s*\d"
+    r"\.(Category|Region)\s*==(?!\s*nil\b)|\.(Category|Region)\s*!=\s*\"|"
+    r"AmountMinor\s*(<=|>=|<|>)\s*(?!0\b|1\b)[\w(]|\.Weekday\(\)|amount_minor\s*(<=|>=|<|>)\s*(?!0\b|1\b)\d"
 )
 STORED_FIELD_WRITE = re.compile(
     r"\b(exp|expense|existing|orig|original|stored|e)\.(Description|Category|Date|Amount|BaseAmount|"
@@ -69,7 +71,8 @@ def scan(diff: str, forbidden: list[str] | None = None, max_files: int | None = 
     for path, n, text in added_lines(diff):
         where = f"{path}:{n}"
         code_only = text.split("//")[0] if path.endswith((".go", ".ts", ".tsx")) else text.split("#")[0]
-        if "legacy/" not in path and "confidence" not in text.lower():
+        # test code may mention floats to assert they are rejected; only production code is scanned
+        if "legacy/" not in path and "confidence" not in text.lower() and not is_test(path):
             if FLOATISH.search(code_only) and MONEYISH.search(code_only):
                 out.append(Violation("float_money", where, text.strip()))
         if not is_test(path):

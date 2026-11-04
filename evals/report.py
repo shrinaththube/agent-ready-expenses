@@ -40,13 +40,13 @@ def table(rows):
     by = defaultdict(list)
     for r in rows:
         by[r["mode"]].append(r)
-    lines = ["| Mode | Runs | Pass rate | Tool calls before first edit | Tokens (in+out) | Time (s) | Runs with a rule violation | float money | policy outside registry | submitted write |",
+    lines = ["| Mode | Runs | Pass rate | Tool calls before first edit | Tokens (all, incl. cache) | Time (s) | Runs with a rule violation | float money | policy outside registry | submitted write |",
              "|---|---|---|---|---|---|---|---|---|---|"]
     for mode in ("no-context", "with-context"):
         rs = by.get(mode, [])
         if not rs:
             continue
-        toks = [sum(r.get("tokens", {}).get(k, 0) for k in ("input_tokens", "output_tokens")) or None for r in rs]
+        toks = [sum(r.get("tokens", {}).get(k, 0) for k in ("input_tokens", "output_tokens", "cache_read_input_tokens", "cache_creation_input_tokens")) or None for r in rs]
         vk = {k: sum(any(v["kind"] == k for v in r["violations"]) for r in rs) for k in KINDS}
         anyv = sum(any(v["kind"] in KINDS for v in r["violations"]) for r in rs)
         lines.append(f"| {mode} | {len(rs)} | {sum(r['passed'] for r in rs)}/{len(rs)} ({100 * sum(r['passed'] for r in rs) / len(rs):.0f}%) | "

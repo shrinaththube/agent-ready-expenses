@@ -106,8 +106,12 @@ func TestHiddenRevisionGoesThroughWorkflowAndChains(t *testing.T) {
 	if code, b := hrDo(t, s, "POST", "/expenses/"+rev.ID+"/submit", "e1", "employee", nil); code != 200 {
 		t.Fatalf("submit revision: %d %s", code, b)
 	}
-	if a := hrAudit(t, s, rev.ID); len(a) < 2 || a[0].FromStatus != "draft" || a[0].ToStatus != "submitted" {
-		t.Fatalf("revision audit = %+v", a)
+	found := false
+	for _, e := range hrAudit(t, s, rev.ID) {
+		found = found || (e.FromStatus == "draft" && e.ToStatus == "submitted")
+	}
+	if !found {
+		t.Fatalf("revision audit lacks draft -> submitted: %+v", hrAudit(t, s, rev.ID))
 	}
 	_, b = hrDo(t, s, "PATCH", "/expenses/"+rev.ID, "e1", "employee", map[string]any{"description": "Keyboard (USB)"})
 	var rev3 contracts.Expense

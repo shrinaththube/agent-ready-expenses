@@ -50,3 +50,14 @@ def test_forbidden_and_max_files():
 
 def test_nil_checks_are_not_policy_logic():
     assert kinds(diff("services/policy/api/server.go", "if p.Category != nil {")) == set()
+
+
+def test_validation_is_not_policy_logic():
+    assert kinds(diff("services/policy/api/server.go", "if rev.Region != contracts.RegionDomestic && rev.Region != contracts.RegionInternational {")) == set()
+    assert kinds(diff("services/policy/api/server.go", "if e.Amount.AmountMinor <= 0 {")) == set()
+    assert kinds(diff("services/policy/api/server.go", "if e.BaseAmount.AmountMinor > 7500 {")) == {"policy_outside_registry"}
+    assert kinds(diff("services/policy/api/server.go", "if e.Category == contracts.ExpenseCategoryMeals {")) == {"policy_outside_registry"}
+
+
+def test_float_in_test_files_is_ignored():
+    assert kinds(diff("services/policy/api/x_test.go", '"float amount": {"amount_minor": 10.5, "total": float64(1)}')) == set()
