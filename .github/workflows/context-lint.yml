@@ -1,0 +1,25 @@
+name: context-lint
+on:
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - "**/AGENTS.md"
+      - "CLAUDE.md"
+      - ".cursor/**"
+      - ".claude/**"
+      - "docs/**"
+      - "Makefile"
+      - "scripts/context_lint.py"
+      - ".github/workflows/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: every path and make target in context files exists
+        run: python scripts/context_lint.py
+      - name: root AGENTS.md stays short
+        run: test "$(wc -l < AGENTS.md)" -le 80
