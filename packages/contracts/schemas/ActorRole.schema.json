@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ActorRole",
+  "description": "Role of the user acting on an expense.",
+  "type": "string",
+  "enum": [
+    "employee",
+    "manager",
+    "finance",
+    "system"
+  ]
+}

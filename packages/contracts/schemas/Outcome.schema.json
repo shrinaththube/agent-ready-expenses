@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Outcome",
+  "description": "Decision outcome, ordered least to most restrictive.",
+  "type": "string",
+  "enum": [
+    "auto_approved",
+    "pending_manager",
+    "pending_finance",
+    "rejected"
+  ]
+}

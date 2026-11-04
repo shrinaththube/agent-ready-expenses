@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AuditEntry",
+  "description": "Append-only record of one workflow transition.",
+  "type": "object",
+  "required": [
+    "seq",
+    "expense_id",
+    "actor",
+    "from_status",
+    "to_status",
+    "reason",
+    "at"
+  ],
+  "properties": {
+    "seq": {
+      "type": "integer"
+    },
+    "expense_id": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "from_status": {
+      "type": "string"
+    },
+    "to_status": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "at": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

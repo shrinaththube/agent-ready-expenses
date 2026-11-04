@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReportRow",
+  "description": "Approved spend per employee, category and month in the base currency.",
+  "type": "object",
+  "required": [
+    "employee_id",
+    "category",
+    "month",
+    "total",
+    "count"
+  ],
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}$"
+    },
+    "total": {
+      "$ref": "Money.schema.json"
+    },
+    "count": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false
+}

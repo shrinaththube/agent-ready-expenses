@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StatusCount",
+  "description": "Number of expenses in a status.",
+  "type": "object",
+  "required": [
+    "status",
+    "count"
+  ],
+  "properties": {
+    "status": {
+      "type": "string"
+    },
+    "count": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false
+}

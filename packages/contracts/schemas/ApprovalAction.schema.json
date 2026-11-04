@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApprovalAction",
+  "description": "Approve or reject.",
+  "type": "string",
+  "enum": [
+    "approve",
+    "reject"
+  ]
+}

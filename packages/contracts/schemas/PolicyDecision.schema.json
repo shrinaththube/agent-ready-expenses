@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PolicyDecision",
+  "description": "Result of evaluating an expense against policies.yaml. Most restrictive outcome wins.",
+  "type": "object",
+  "required": [
+    "expense_id",
+    "outcome",
+    "reason",
+    "matched_rules"
+  ],
+  "properties": {
+    "expense_id": {
+      "type": "string"
+    },
+    "outcome": {
+      "$ref": "Outcome.schema.json"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "matched_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "MatchedRule.schema.json"
+      }
+    }
+  },
+  "additionalProperties": false
+}

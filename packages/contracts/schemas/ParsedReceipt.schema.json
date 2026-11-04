@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ParsedReceipt",
+  "description": "Fields extracted from a receipt by rule-based parsing.",
+  "type": "object",
+  "required": [
+    "merchant",
+    "date",
+    "total",
+    "confidence"
+  ],
+  "properties": {
+    "merchant": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "total": {
+      "$ref": "Money.schema.json"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Parser confidence; below 0.6 the dashboard asks the user to confirm."
+    }
+  },
+  "additionalProperties": false
+}

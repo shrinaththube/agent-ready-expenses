@@ -1,0 +1,409 @@
+[
+  {
+    "name": "meal exactly at $75 cap",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "meals",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 7500,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 7500,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "auto_approved",
+    "expect_rules": []
+  },
+  {
+    "name": "meal one cent over $75 cap",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "meals",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 7501,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 7501,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "meals-per-diem"
+    ]
+  },
+  {
+    "name": "two attendees, $150 is within cap",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "meals",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 15000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 15000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 2,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "auto_approved",
+    "expect_rules": []
+  },
+  {
+    "name": "two attendees, $150.01 is over",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "meals",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 15001,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 15001,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 2,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "meals-per-diem"
+    ]
+  },
+  {
+    "name": "prior same-day meal pushes over cap",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "meals",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 4000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 4000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 4000,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "meals-per-diem"
+    ]
+  },
+  {
+    "name": "office $200.00 exactly is auto",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "office",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 20000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 20000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "auto_approved",
+    "expect_rules": []
+  },
+  {
+    "name": "office $200.01 needs manager",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "office",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 20001,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 20001,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "manager-over-200"
+    ]
+  },
+  {
+    "name": "lodging $999.99 manager only",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "lodging",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 99999,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 99999,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "manager-over-200"
+    ]
+  },
+  {
+    "name": "lodging $1000.00 needs finance",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "lodging",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 100000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 100000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_finance",
+    "expect_rules": [
+      "manager-over-200",
+      "finance-at-1000"
+    ]
+  },
+  {
+    "name": "travel without receipt rejected",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "travel",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 5000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 5000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": false,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "rejected",
+    "expect_rules": [
+      "travel-needs-receipt"
+    ]
+  },
+  {
+    "name": "travel with receipt under $200 auto",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "travel",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 5000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 5000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "auto_approved",
+    "expect_rules": []
+  },
+  {
+    "name": "travel without receipt and $1000 still rejected",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "travel",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 150000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 150000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": false,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "rejected",
+    "expect_rules": [
+      "manager-over-200",
+      "finance-at-1000",
+      "travel-needs-receipt"
+    ]
+  },
+  {
+    "name": "alcohol always manager",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "alcohol",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 1500,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 1500,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "alcohol-needs-manager"
+    ]
+  },
+  {
+    "name": "software on a weekday auto",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "software",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 3000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 3000,
+        "currency": "USD"
+      },
+      "date": "2024-03-13",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "auto_approved",
+    "expect_rules": []
+  },
+  {
+    "name": "software on Saturday flagged",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "software",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 3000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 3000,
+        "currency": "USD"
+      },
+      "date": "2024-03-16",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "pending_manager",
+    "expect_rules": [
+      "weekend-software-flag"
+    ]
+  },
+  {
+    "name": "meals on Saturday are not flagged",
+    "expense": {
+      "employee_id": "e1",
+      "manager_id": "m1",
+      "category": "meals",
+      "description": "fixture",
+      "amount": {
+        "amount_minor": 3000,
+        "currency": "USD"
+      },
+      "base_amount": {
+        "amount_minor": 3000,
+        "currency": "USD"
+      },
+      "date": "2024-03-16",
+      "has_receipt": true,
+      "attendees": 1,
+      "region": "domestic"
+    },
+    "prior_day_minor": 0,
+    "expect_outcome": "auto_approved",
+    "expect_rules": []
+  }
+]

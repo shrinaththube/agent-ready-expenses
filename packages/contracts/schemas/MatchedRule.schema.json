@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MatchedRule",
+  "description": "One policy rule that matched an expense.",
+  "type": "object",
+  "required": [
+    "rule_id",
+    "outcome",
+    "reason"
+  ],
+  "properties": {
+    "rule_id": {
+      "type": "string"
+    },
+    "outcome": {
+      "$ref": "Outcome.schema.json"
+    },
+    "reason": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
