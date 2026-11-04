@@ -1,0 +1,6 @@
+expense_id,employee_id,date,category,description,amount,currency,base_amount,base_currency,status
+exp-0001,e1,2024-03-13,meals,Lunch,42.00,USD,42.00,USD,approved
+exp-0002,e1,2024-03-14,meals,"Team ""kickoff"", Café",1500,JPY,10.03,USD,approved
+exp-0003,e1,2024-03-14,travel,"'=HYPERLINK(""http://evil.test"",""x"")",12.345,KWD,40.21,USD,pending_manager
+exp-0004,e1,2024-03-15,meals,"multi
+line",0.05,EUR,0.05,USD,approved

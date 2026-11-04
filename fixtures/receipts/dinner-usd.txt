@@ -1,0 +1,7 @@
+Harbor Grill
+03/15/2024 19:42
+Entree 2x        61.00
+Wine             14.00
+Subtotal         75.00
+Tip               7.35
+TOTAL USD 82.35
