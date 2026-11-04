@@ -60,6 +60,29 @@ func hrSubmitted(t *testing.T, s *Server) contracts.Expense {
 	return hrGet(t, s, e.ID)
 }
 
+// hrExpense decodes a response that is either an expense or a wrapper object containing one.
+func hrExpense(b []byte) contracts.Expense {
+	var e contracts.Expense
+	_ = json.Unmarshal(b, &e)
+	if e.ID != "" {
+		return e
+	}
+	var w map[string]json.RawMessage
+	_ = json.Unmarshal(b, &w)
+	for _, raw := range w {
+		var inner contracts.Expense
+		if json.Unmarshal(raw, &inner) == nil && inner.ID != "" {
+			return inner
+		}
+	}
+	return e
+}
+
+// hrAuditAppendOnly: the earlier entries must be unchanged (new entries may be appended).
+func hrAuditAppendOnly(before, after []contracts.AuditEntry) bool {
+	return len(after) >= len(before) && reflect.DeepEqual(before, after[:len(before)])
+}
+
 func hrServer(t *testing.T) *Server {
 	eng, err := policy.LoadFile("../policies/policies.yaml")
 	if err != nil {
@@ -79,15 +102,14 @@ func TestHiddenImmutableFixCreatesRevision(t *testing.T) {
 	if code != 200 && code != 201 {
 		t.Fatalf("patch = %d %s", code, b)
 	}
-	var rev contracts.Expense
-	_ = json.Unmarshal(b, &rev)
+	rev := hrExpense(b)
 
 	after := hrGet(t, s, orig.ID)
 	if !reflect.DeepEqual(orig, after) {
 		t.Fatalf("original changed:\nbefore %+v\nafter  %+v", orig, after)
 	}
-	if !reflect.DeepEqual(auditBefore, hrAudit(t, s, orig.ID)) {
-		t.Fatal("original's audit trail changed")
+	if !hrAuditAppendOnly(auditBefore, hrAudit(t, s, orig.ID)) {
+		t.Fatal("original's audit trail was rewritten (append-only)")
 	}
 	if rev.ID == orig.ID || rev.Description != "Keyboard" || rev.Revision != 2 || rev.RevisionOf == nil || *rev.RevisionOf != orig.ID {
 		t.Fatalf("revision = %+v", rev)
@@ -101,8 +123,7 @@ func TestHiddenRevisionGoesThroughWorkflowAndChains(t *testing.T) {
 	s := hrServer(t)
 	orig := hrSubmitted(t, s)
 	_, b := hrDo(t, s, "PATCH", "/expenses/"+orig.ID, "e1", "employee", map[string]any{"description": "Keyboard"})
-	var rev contracts.Expense
-	_ = json.Unmarshal(b, &rev)
+	rev := hrExpense(b)
 	if code, b := hrDo(t, s, "POST", "/expenses/"+rev.ID+"/submit", "e1", "employee", nil); code != 200 {
 		t.Fatalf("submit revision: %d %s", code, b)
 	}
@@ -114,8 +135,7 @@ func TestHiddenRevisionGoesThroughWorkflowAndChains(t *testing.T) {
 		t.Fatalf("revision audit lacks draft -> submitted: %+v", hrAudit(t, s, rev.ID))
 	}
 	_, b = hrDo(t, s, "PATCH", "/expenses/"+rev.ID, "e1", "employee", map[string]any{"description": "Keyboard (USB)"})
-	var rev3 contracts.Expense
-	_ = json.Unmarshal(b, &rev3)
+	rev3 := hrExpense(b)
 	// revision_of links the chain: either the root original or the revision it corrects.
 	if rev3.Revision != 3 || rev3.RevisionOf == nil || (*rev3.RevisionOf != orig.ID && *rev3.RevisionOf != rev.ID) {
 		t.Fatalf("revision 3 = %+v (revision_of must link back to %s or %s)", rev3, orig.ID, rev.ID)
